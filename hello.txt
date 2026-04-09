@@ -3,3 +3,5 @@ This is done in the test-final branch
 test with no tag
 
 test w/ protected branches
+
+test final with everything up to date
