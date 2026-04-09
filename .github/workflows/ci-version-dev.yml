@@ -1,0 +1,17 @@
+name: CI for versioning
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+    types: [ closed ]
+
+jobs:
+  bump-dev:
+    if: ${{ github.event.pull_request.merged == true }}
+    secrets: inherit
+    uses: SBouchard01/test_ci/.github/workflows/bump-version.yml@main
+    permissions:
+      pull-requests: read
+      contents: write
+    with:
+      bump_type: dev
