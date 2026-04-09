@@ -5,32 +5,27 @@ on:
     branches: [ "main" ]
     types: [ closed ]
 
+permissions:
+  pull-requests: read
+  contents: write
+
 jobs:
   bump-patch:
     if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'bump:patch') }}
     secrets: inherit
     uses: SBouchard01/test_ci/.github/workflows/bump-version.yml@main
-    permissions:
-      pull-requests: read
-      contents: write
     with:
       bump_type: patch
   bump-minor:
     if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'bump:minor') }}
     secrets: inherit
     uses: SBouchard01/test_ci/.github/workflows/bump-version.yml@main
-    permissions:
-      pull-requests: read
-      contents: write
     with:
       bump_type: minor
   bump-major:
     if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'bump:major') }}
     secrets: inherit
     uses: SBouchard01/test_ci/.github/workflows/bump-version.yml@main
-    permissions:
-      pull-requests: read
-      contents: write
     with:
       bump_type: major
 
