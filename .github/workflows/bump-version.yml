@@ -5,15 +5,10 @@ on:
       bump_type:
         required: true
         type: string
-      extra_branch:
-        required: false
-        type: string
 
 jobs: 
   bump-version:
     runs-on: ubuntu-latest
-    outputs:
-      commit_id: ${{ steps.get_commit.outputs.commit_id }}
     steps:
       - uses: actions/checkout@v3
       - name: Configure Git
@@ -28,27 +23,6 @@ jobs:
         run: pip install bump2version
       - name: Bump version
         run: bump2version ${{ inputs.bump_type }}
-      - name: Get last commit ID
-        id: get_commit
-        run: echo "commit_id=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Push changes
         run: |
           git push --follow-tags
-
-  update-extra-branch:
-    needs: bump-version
-    if: ${{ inputs.extra_branch != '' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Fetch all history for all branches and tags
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Cherry-pick to extra branch
-        run: |
-          git checkout ${{ inputs.extra_branch }}
-          git cherry-pick ${{ needs.bump-version.outputs.commit_id }}
-          git push origin ${{ inputs.extra_branch }}
