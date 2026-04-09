@@ -8,6 +8,10 @@ on:
       bump_type:
         required: true
         type: string
+      add-tag:
+        required: false
+        default: false
+        type: boolean
 
 jobs: 
   bump-version:
@@ -25,7 +29,7 @@ jobs:
       - name: Install bump2version
         run: pip install bump2version
       - name: Bump version
-        run: bump2version ${{ inputs.bump_type }}
+        run: bump2version ${{ inputs.bump_type }} ${{ (inputs.add-tag == false && '--no-tag') || '' }}
       - name: Push changes
         run: |
           git push --follow-tags
