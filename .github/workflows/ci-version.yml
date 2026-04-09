@@ -15,6 +15,7 @@ jobs:
       contents: write
     with:
       bump_type: patch
+      extra_branch: dev
   bump-minor:
     if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'bump:minor') }}
     secrets: inherit
@@ -24,6 +25,7 @@ jobs:
       contents: write
     with:
       bump_type: minor
+      extra_branch: dev
   bump-major:
     if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'bump:major') }}
     secrets: inherit
@@ -33,3 +35,4 @@ jobs:
       contents: write
     with:
       bump_type: major
+      extra_branch: dev
