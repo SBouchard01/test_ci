@@ -29,9 +29,19 @@ jobs:
       - name: Push changes
         run: |
           git push --follow-tags
+
+  update-extra-branch:
+    needs: bump-version
+    if: ${{ inputs.extra_branch != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get current branch
+        id: get_branch
+        run: |
+          echo "current_branch=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
       - name: Cherry-pick to extra branch
-        if: ${{ inputs.extra_branch != '' }}
         run: |
           git checkout ${{ inputs.extra_branch }}
-          git cherry-pick main
+          git cherry-pick ${{ env.current_branch }}
           git push origin ${{ inputs.extra_branch }}
