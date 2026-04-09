@@ -34,9 +34,14 @@ jobs:
     with:
       bump_type: major
 
-  merge-dev:
+  merge-dev: # Run only if any of the bump jobs were triggered, regardless of their success or failure
     needs: [bump-patch, bump-minor, bump-major]
-    if: ${{ github.event.pull_request.merged == true }}
+    if: |
+      always() && (
+        needs.bump-patch.result == 'success' ||
+        needs.bump-minor.result == 'success' ||
+        needs.bump-major.result == 'success'
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
