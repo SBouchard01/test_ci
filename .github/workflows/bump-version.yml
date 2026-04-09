@@ -10,7 +10,7 @@ on:
         type: string
       add-tag:
         required: false
-        default: false
+        default: true
         type: boolean
 
 jobs: 
