@@ -13,9 +13,16 @@ On any closed PR to `main`, the version of the package will be automatically bum
 > [!NOTE]
 > A workflow is also triggered on any PR to `main` to ensure exactly one of the bump type tags is present. If not, the workflow will fail and the PR cannot be merged until the issue is resolved.
 
-After any PR merged to main, the main branch will be automatically merged back to dev to ensure the dev branch is up to date with the latest release. 
+After any PR merged to `main`, the `main` branch will be automatically merged back to `dev` to ensure the `dev` branch is up to date with the latest release. 
 
 > [!TIP]
-> To avoid conflicts, ensure your dev branch is up to date with the latest main branch before submitting a PR.
+> To avoid conflicts, ensure your `dev` branch is up to date with the latest `main` branch before submitting a PR.
 > 
 > If you need to resolve a conflict on the version numbers, please update the version number with the current version number in the target branch; the version will be automatically bumped to the next version after the PR is merged.
+
+
+### Setup (for later)
+
+1. Add the CI and `bumpversion.cfg` files to the repository.
+2. Create a ssh key without a passphrase, and add the public key to the repository deploy keys with write access. Add the private key as a secret in the repository settings (e.g., `PUSH_KEY`).
+3. Give the deploy keys permissions to bypass the protection rules for the `main` and `dev` branches to allow the workflow to push the changes.
