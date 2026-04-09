@@ -1,31 +1,23 @@
 name: CI for versioning
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    branches: [ "main" ]
+    types: [ closed ]
 
 jobs:
-  bump-version-patch:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install bump2version
-
-      - name: Bump version
-        run: |
-          bump2version --list patch
-          git push --tags
-        
+  bump-patch:
+    if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'bump:patch') }}
+    uses: SBouchard01/test_ci/.github/workflows/bump-version.yml@main
+    with:
+      bump_type: patch
+  bump-minor:
+    if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'bump:minor') }}
+    uses: SBouchard01/test_ci/.github/workflows/bump-version.yml@main
+    with:
+      bump_type: minor
+  bump-major:
+    if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'bump:major') }}
+    uses: SBouchard01/test_ci/.github/workflows/bump-version.yml@main
+    with:
+      bump_type: major
