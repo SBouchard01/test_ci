@@ -20,3 +20,4 @@ jobs:
       contents: write
     with:
       bump_type: dev
+      add-tag: false
