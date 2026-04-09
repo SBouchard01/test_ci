@@ -1,1 +1,2 @@
-This commit happens before a bump to the dev version v2
+This commit happens before a bump to the dev version 
+This is done in the test-final branch
