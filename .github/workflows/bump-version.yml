@@ -17,9 +17,9 @@ jobs:
   bump-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          ssh-key: ${{ secrets.SSH_KEY }}
+          ssh-key: ${{ secrets.PUSH_KEY }}
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
