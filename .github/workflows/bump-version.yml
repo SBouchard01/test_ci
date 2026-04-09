@@ -36,6 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
@@ -46,7 +48,6 @@ jobs:
           echo "current_branch=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_OUTPUT
       - name: Cherry-pick to extra branch
         run: |
-          git fetch --all
           git checkout ${{ inputs.extra_branch }}
           git cherry-pick ${{ steps.get_branch.outputs.current_branch }}
           git push origin ${{ inputs.extra_branch }}
