@@ -36,13 +36,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Get current branch
         id: get_branch
         run: |
-          echo "current_branch=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+          echo "current_branch=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_OUTPUT
       - name: Cherry-pick to extra branch
         run: |
           git fetch --all
           git checkout ${{ inputs.extra_branch }}
-          git cherry-pick ${{ env.current_branch }}
+          git cherry-pick ${{ steps.get_branch.outputs.current_branch }}
           git push origin ${{ inputs.extra_branch }}
