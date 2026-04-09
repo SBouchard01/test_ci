@@ -5,6 +5,9 @@ on:
       bump_type:
         required: true
         type: string
+      extra_branch:
+        required: false
+        type: string
 
 jobs: 
   bump-version:
@@ -22,7 +25,13 @@ jobs:
       - name: Install bump2version
         run: pip install bump2version
       - name: Bump version
-        run: bump2version --list ${{ inputs.bump_type }}
+        run: bump2version ${{ inputs.bump_type }}
       - name: Push changes
         run: |
           git push --follow-tags
+      - name: Cherry-pick to extra branch
+        if: ${{ inputs.extra_branch != '' }}
+        run: |
+          git checkout ${{ inputs.extra_branch }}
+          git cherry-pick main
+          git push origin ${{ inputs.extra_branch }}
