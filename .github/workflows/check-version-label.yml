@@ -1,4 +1,9 @@
 name: Has version-bump label
+description: |
+  This workflow checks that any pull request targeting the main branch has one of the following labels: 
+  bump:patch, bump:minor, bump:major, or bump:none. This ensures that all pull requests have 
+  a clear indication of how they will affect the versioning when merged.
+
 on:
   pull_request:
     branches: [ "main" ]

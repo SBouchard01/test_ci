@@ -1,4 +1,9 @@
 name: CI for versioning
+description: |
+  This workflow automatically bumps the dev version in the VERSION file when a pull request is 
+  merged into the dev branch. This allows us to have a separate versioning scheme for the
+  development branch, which can be useful for testing and pre-release versions 
+  before they are merged into main.
 
 on:
   pull_request:

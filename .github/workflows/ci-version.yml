@@ -1,4 +1,8 @@
 name: CI for versioning
+description: |
+  This workflow automatically bumps the version in the VERSION file when a pull request is 
+  merged into the main branch with the appropriate label (bump:patch, bump:minor, bump:major). 
+  It also merges the changes back to the dev branch to keep it up to date with the version changes.
 
 on:
   pull_request:
@@ -10,6 +14,7 @@ permissions:
   contents: write
 
 jobs:
+  # These jobs will only run if the pull request is merged and has the corresponding label for the type of version bump
   bump-patch:
     if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'bump:patch') }}
     secrets: inherit
@@ -29,7 +34,6 @@ jobs:
     with:
       bump_type: major
 
-  
   merge-dev: # Merge back main to dev to ensure the version change is propagated back to the dev branch
     needs: [bump-patch, bump-minor, bump-major] 
     # Run only if any of the bump jobs were triggered, regardless of their success or failure

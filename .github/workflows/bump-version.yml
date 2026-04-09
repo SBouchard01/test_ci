@@ -1,4 +1,7 @@
 name: Bump version on call
+description: |
+  This workflow updates the version in the VERSION file based on the bump type (patch, minor, major, dev) passed as an input.
+
 on:
   workflow_call:
     inputs:
