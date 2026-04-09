@@ -34,8 +34,10 @@ jobs:
     with:
       bump_type: major
 
-  merge-dev: # Run only if any of the bump jobs were triggered, regardless of their success or failure
-    needs: [bump-patch, bump-minor, bump-major]
+  
+  merge-dev: # Merge back main to dev to ensure the version change is propagated back to the dev branch
+    needs: [bump-patch, bump-minor, bump-major] 
+    # Run only if any of the bump jobs were triggered, regardless of their success or failure
     if: |
       always() && (
         needs.bump-patch.result == 'success' ||
@@ -51,8 +53,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Merge dev into main
+      - name: Merge main back into dev
         run: |
-          git checkout main
-          git merge dev --no-ff -m "Merge dev into main after version bump"
-          git push origin main
+          git checkout dev
+          git merge main --no-ff -m "Merge main into dev after version bump"
+          git push origin dev
